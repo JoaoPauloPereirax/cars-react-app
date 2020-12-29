@@ -1,7 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useState} from 'react'
 import './global.css';
 
 function App() {
+
+  const [cars,setCars]=useState([])
 
   const getCars = ()=>{
     fetch('https://api.b7web.com.br/carros/api/carros')
@@ -9,7 +11,11 @@ function App() {
         return result.json()
       })
       .then(function(json){
-        console.log('Resultado: ',json)
+        if(json.error === ''){
+          setCars(json.cars)
+        }else{
+          alert(json.error)
+        }
       })
   }
 
@@ -20,8 +26,19 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Olá, mundo!</h1>
-      <button onClick={getCars}>Carregar Caros</button>
+      <h1>Lista de Carros</h1>
+      <button onClick={getCars}>Atualizar lista</button>
+
+    <hr/>
+
+    {cars.map((item,index)=>(
+      <div key={index} >
+        <img src={item.photo} />
+        <h3> {item.brand} - {item.name} </h3>
+        <p> {item.year} - R${item.price} </p>
+      </div>
+    ))}
+
     </div>
   );
 }
