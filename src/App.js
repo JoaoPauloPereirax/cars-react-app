@@ -9,7 +9,7 @@ function App() {
 
   const [year,setYear] = useState('')
 
-  const async getCars = ()=>{
+  const getCars = async ()=>{
     setLoading(true)
     const result = await fetch(`https://api.b7web.com.br/carros/api/carros?ano=${year}`)
     const json = await result.json()
