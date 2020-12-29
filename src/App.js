@@ -9,20 +9,18 @@ function App() {
 
   const [year,setYear] = useState('')
 
-  const getCars = ()=>{
+  const async getCars = ()=>{
     setLoading(true)
-    fetch(`https://api.b7web.com.br/carros/api/carros?ano=${year}`)
-      .then(function(result){
-        return result.json()
-      })
-      .then(function(json){
-        setLoading(false)
-        if(json.error === ''){
-          setCars(json.cars)
-        }else{
-          alert(json.error)
-        }
-      })
+    const result = await fetch(`https://api.b7web.com.br/carros/api/carros?ano=${year}`)
+    const json = await result.json()
+    setLoading(false)
+
+    if(json.error === ''){
+      setCars(json.cars)
+    }else{
+      alert(json.error)
+    }
+
   }
 
   useEffect(()=>{
@@ -55,7 +53,7 @@ function App() {
       <h1>Carregando Carros...</h1>
     }
 
-    {cars.length == 0 && loading == false &&
+    {cars.length === 0 && loading === false &&
       <h2>Nenhum carro foi encontrado!</h2> 
     }
 
