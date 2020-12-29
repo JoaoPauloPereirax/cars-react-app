@@ -5,12 +5,16 @@ function App() {
 
   const [cars,setCars]=useState([])
 
+  const [loading,setLoading] = useState(false)
+
   const getCars = ()=>{
+    setLoading(true)
     fetch('https://api.b7web.com.br/carros/api/carros')
       .then(function(result){
         return result.json()
       })
       .then(function(json){
+        setLoading(false)
         if(json.error === ''){
           setCars(json.cars)
         }else{
@@ -30,6 +34,10 @@ function App() {
       <button onClick={getCars}>Atualizar lista</button>
 
     <hr/>
+
+    {loading &&
+      <h1>Carregando Carros...</h1>
+    }
 
     {cars.map((item,index)=>(
       <div key={index} >
