@@ -7,9 +7,11 @@ function App() {
 
   const [loading,setLoading] = useState(false)
 
+  const [year,setYear] = useState('')
+
   const getCars = ()=>{
     setLoading(true)
-    fetch('https://api.b7web.com.br/carros/api/carros')
+    fetch(`https://api.b7web.com.br/carros/api/carros?ano=${year}`)
       .then(function(result){
         return result.json()
       })
@@ -25,18 +27,36 @@ function App() {
 
   useEffect(()=>{
     getCars()
-  },[])
+  },[year])
+
+  const handleYearChange = (e)=>{
+    setYear(e.target.value)
+  }
 
 
   return (
     <div className="App">
       <h1>Lista de Carros</h1>
+      <select onChange={handleYearChange} >
+        <option></option>
+        <option>2021</option>
+        <option>2020</option>
+        <option>2019</option>
+        <option>2018</option>
+        <option>2017</option>
+        <option>1994</option>
+      </select>
+
       <button onClick={getCars}>Atualizar lista</button>
 
     <hr/>
 
     {loading &&
       <h1>Carregando Carros...</h1>
+    }
+
+    {cars.length == 0 && loading == false &&
+      <h2>Nenhum carro foi encontrado!</h2> 
     }
 
     {cars.map((item,index)=>(
